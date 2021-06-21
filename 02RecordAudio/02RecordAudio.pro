@@ -22,3 +22,27 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+win32 {
+    FFMPEG_HOME = ..
+}
+
+macx {
+    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.3.2
+}
+
+unix:!macx {
+    FFMPEG_HOME = $$(FFMPEG_HOME)/out
+}
+
+message(FFMPEG_HOME = $${FFMPEG_HOME})
+
+QMAKE_LFLAGS += -Wl,-rpath=$${FFMPEG_HOME}/lib
+
+INCLUDEPATH += $${FFMPEG_HOME}/include
+
+LIBS += -L $${FFMPEG_HOME}/lib \
+        -lavdevice \
+        -lavformat \
+        -lavutil
