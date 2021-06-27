@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "audiothread.h"
 #include "playthread.h"
 
 QT_BEGIN_NAMESPACE

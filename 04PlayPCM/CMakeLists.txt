@@ -28,10 +28,16 @@ set(DEBUG_FFMPEG FALSE)
 #set(SDL2_INCLUDE_DIR "/home/kevin/CLionProjects/SDL/out/include/SDL")
 IF (WIN32)
         MESSAGE(STATUS "Now is windows")
-    #set(CMAKE_CXX_FLAGS_RELEASE "-Od ${CMAKE_CXX_FLAGS}")
+        #set(CMAKE_CXX_FLAGS_RELEASE "-Od ${CMAKE_CXX_FLAGS}")
         #STRING(REPLACE "-O2" "-Od" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
 ELSEIF (APPLE)
         MESSAGE(STATUS "Now is OSX systems.")
+        set(FFMPEG_HOME "/usr/local/Cellar/ffmpeg/4.4_2")
+        include_directories(${FFMPEG_HOME}/include)
+        link_directories(${FFMPEG_HOME}/lib)
+        find_package(SDL2 REQUIRED)
+        include_directories(${SDL2_INCLUDE_DIRS}/../)
+        set(CMAKE_PREFIX_PATH "/Users/kevinxie/Qt/6.1.1/clang_64/lib/cmake")
 ELSEIF (UNIX)
         MESSAGE(STATUS "Now is UNIX-like OS's. Including Linux  and CygWin")
         if (DEBUG_GLIBC)
@@ -61,6 +67,7 @@ ELSEIF (UNIX)
 
 ENDIF ()
 
+MESSAGE(STATUS "SDL2_INCLUDE_DIRS = " ${SDL2_INCLUDE_DIRS})
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check https://doc.qt.io/qt/deployment-android.html for more information.
@@ -82,11 +89,9 @@ set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
-        audiothread.cpp
-        audiothread.h
         playthread.cpp
         playthread.h
-        mainwindow.ui
+         mainwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
