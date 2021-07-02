@@ -1,0 +1,10 @@
+[project-build]
+command=cmake -B <root>/build -DCMAKE_BUILD_TYPE=Debug <root> && cmake --build <root>/build --target all -- -j4
+# 设置在当前项目的根目录处运行 make
+cwd=$(VIM_ROOT)
+
+[project-run]
+command=cmake -B <root>/build -DCMAKE_BUILD_TYPE=Debug <root> && cmake --build <root>/build --target all -- -j4 && ./build/$(VIM_PRONAME)
+# <root> 是 $(VIM_ROOT) 的别名，写起来容易些
+cwd=<root>
+# output=terminal
