@@ -5,9 +5,6 @@
 
 extern "C" {
 #include "libswresample/swresample.h"
-#include "libavutil/mathematics.h"
-#include "libavutil/mem.h"
-#include "libavutil/samplefmt.h"
 }
 
 FFmpegs::FFmpegs(){

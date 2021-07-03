@@ -1,12 +1,10 @@
 #include "audiothread.h"
 #include "ffmpegs.h"
-#include "libavutil/samplefmt.h"
 #include <QDebug>
 extern "C" {
 //引用C语言的库，必须要阻止name mangling
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
-#include "libavcodec/codec_par.h"
 }
 #include <QFile>
 

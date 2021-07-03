@@ -23,7 +23,7 @@ add_custom_target(
 
 set(DEBUG_SDL FALSE)
 set(DEBUG_GLIBC FALSE)
-set(DEBUG_FFMPEG TRUE)
+set(DEBUG_FFMPEG FALSE)
 
 #set(SDL2_INCLUDE_DIR "/home/kevin/CLionProjects/SDL/out/include/SDL")
 IF (WIN32)

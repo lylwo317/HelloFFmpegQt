@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>开始录音</string>
+     <string>开始重采样</string>
     </property>
    </widget>
   </widget>
@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>29</height>
     </rect>
    </property>
   </widget>

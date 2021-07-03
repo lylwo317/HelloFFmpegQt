@@ -2,8 +2,7 @@
 #define FFMPEGS_H
 
 extern "C"{
-#include "libavutil/samplefmt.h"
-#include "libavcodec/codec.h"
+#include <libavcodec/avcodec.h>
 }
 #include <stdint.h>
 

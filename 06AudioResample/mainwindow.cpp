@@ -20,11 +20,11 @@ void MainWindow::on_recordAudioBtn_clicked()
         //新建线程
         audioThread = new AudioThread(this);
         connect(audioThread, &AudioThread::finished, this, [this](){
-           ui->recordAudioBtn->setText("开始录音");
+           ui->recordAudioBtn->setText("开始重采样");
            audioThread = nullptr;
         });
         audioThread->start();
-        ui->recordAudioBtn->setText("结束录音");
+        ui->recordAudioBtn->setText("结束重采样");
     }else {
         //结束线程
         audioThread->requestInterruption();
