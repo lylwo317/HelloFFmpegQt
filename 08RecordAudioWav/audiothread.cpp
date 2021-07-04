@@ -65,10 +65,13 @@ void AudioThread::run(){
 
     bool isBegin = false;
     uint64_t pcmSize = 0;
+    int perSampleFramsBytes = header.bitsPerSample * header.numChannels >> 3;
     while (!isInterruptionRequested() && av_read_frame(ctx, &pkt) == 0) {
         if(isBegin){
             file.write((const char *)pkt.data,pkt.size);
             pcmSize += pkt.size;
+            qint64 ms = 1000 * pcmSize / perSampleFramsBytes / header.sampleRate;
+            emit onTimeChanged(ms);
         }
         int16_t *dataCur = (int16_t *)pkt.data;
         if(!isBegin && *dataCur != 32767 && *dataCur != -32768){

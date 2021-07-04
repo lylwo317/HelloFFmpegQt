@@ -9,6 +9,9 @@ class AudioThread : public QThread
 
 private:
     void run() override;
+Q_SIGNALS:
+    void onTimeChanged(qint64 ms);
+
 public:
     AudioThread(QObject *parent = nullptr);
 

@@ -18,6 +18,7 @@ public:
 
 private slots:
     void on_recordAudioBtn_clicked();
+    void on_time_changed(qint64 ms);
 
 private:
     Ui::MainWindow *ui;
