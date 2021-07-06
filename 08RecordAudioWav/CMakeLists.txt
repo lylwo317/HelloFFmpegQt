@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(08RecordAudioWav LANGUAGES CXX)
+get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+string(REPLACE " " "_" ProjectId ${ProjectId})
+set(PROJECT_TARGET_NAME ${ProjectId})
+project(${PROJECT_TARGET_NAME} LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -89,22 +92,22 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(08RecordAudioWav
+    qt_add_executable(${PROJECT_TARGET_NAME}
         ${PROJECT_SOURCES}
     )
 else()
     if(ANDROID)
-        add_library(08RecordAudioWav SHARED
+        add_library(${PROJECT_TARGET_NAME} SHARED
             ${PROJECT_SOURCES}
         )
     else()
-        add_executable(08RecordAudioWav
+        add_executable(${PROJECT_TARGET_NAME}
             ${PROJECT_SOURCES}
         )
     endif()
 endif()
 
-target_link_libraries(08RecordAudioWav PRIVATE
+target_link_libraries(${PROJECT_TARGET_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     avcodec
     avdevice
