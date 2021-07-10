@@ -7,7 +7,7 @@
 #include <SDL2/SDL.h>
 #include <cstddef>
 
-#define FILENAME "/Users/kevinxie/QtWorkspace/HelloFFmpegQt/out.pcm"
+#define FILENAME "../44100_s16_2_src.pcm"
 //PCM解析所需要的信息
 #define SAMPLE_RATE 44100
 #define SAMPLE_BIT_SIZE 16
