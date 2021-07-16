@@ -48,8 +48,8 @@ ELSEIF (APPLE)
         include_directories(${SDL2_INCLUDE_DIRS}/../)
         set(CMAKE_PREFIX_PATH "/Users/kevinxie/Qt/6.1.1/clang_64/lib/cmake")
 ELSEIF (UNIX)
-        set(FFMPEG_HOME "/home/kevin/CLionProjects/FFmpeg/out")
-        
+        set(FFMPEG_HOME "/usr/local/ffmpeg")
+
         #配置rpath
         # make install时使用的rpath
         set(CMAKE_INSTALL_RPATH "${FFMPEG_HOME}/lib")

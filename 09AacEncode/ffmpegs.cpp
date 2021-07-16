@@ -65,7 +65,7 @@ void FFmpegs::pcm2aac(const char* pcmFileName, PCMSpec& spec,
 
     AVCodec* codec = nullptr;
 
-    codec = avcodec_find_decoder_by_name("libfdk_aac");
+    codec = avcodec_find_encoder_by_name("libfdk_aac");
     if (!codec) {
         qDebug() << "encoder not found";
         return;
@@ -79,7 +79,8 @@ void FFmpegs::pcm2aac(const char* pcmFileName, PCMSpec& spec,
         return;
     }
 
-    AVCodecContext* ctx = avcodec_alloc_context3(codec);
+    AVCodecContext *ctx = nullptr;
+    ctx = avcodec_alloc_context3(codec);
     if (!ctx) {
         qDebug() << "avcodec_alloc_context3 error.";
         return;
@@ -92,7 +93,7 @@ void FFmpegs::pcm2aac(const char* pcmFileName, PCMSpec& spec,
 
     ctx->bit_rate = 32000;
     //规格
-    ctx->profile = FF_PROFILE_AAC_LOW;
+    ctx->profile = FF_PROFILE_AAC_HE_V2;
 
     AVFrame* frame = nullptr;
     AVPacket* packet = nullptr;
@@ -132,7 +133,7 @@ void FFmpegs::pcm2aac(const char* pcmFileName, PCMSpec& spec,
         goto fail;
     }
 
-    if (!aacFile.open(QFile::ReadOnly)) {
+    if (!aacFile.open(QFile::WriteOnly)) {
         qDebug() << "aacFile open error";
         goto fail;
     }

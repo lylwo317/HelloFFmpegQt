@@ -9,7 +9,7 @@ extern "C"{
 #define printAvError(msg, ret) \
     char errbuf[1024]; \
     av_strerror(ret, errbuf, sizeof (errbuf)); \
-    qDebug() << msg;
+    qDebug() << msg << errbuf;
 
 struct PCMSpec{
     int sampleRate;
