@@ -1,0 +1,141 @@
+cmake_minimum_required(VERSION 3.5)
+
+get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+string(REPLACE " " "_" ProjectId ${ProjectId})
+set(PROJECT_TARGET_NAME ${ProjectId})
+project(${PROJECT_TARGET_NAME} LANGUAGES CXX)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+# use, i.e. don't skip the full RPATH for the build tree
+# set(CMAKE_SKIP_BUILD_RPATH FALSE)
+
+# don't add the automatically determined parts of the RPATH
+# which point to directories outside the build tree to the install RPATH
+# set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_VERBOSE_MAKEFILE TRUE)
+
+add_custom_target(
+                copy-compile-commands ALL
+                ${CMAKE_COMMAND} -E copy_if_different
+                ${CMAKE_BINARY_DIR}/compile_commands.json
+                ${CMAKE_CURRENT_LIST_DIR}
+)
+
+set(DEBUG_SDL FALSE)
+set(DEBUG_GLIBC FALSE)
+set(DEBUG_FFMPEG TRUE)
+
+
+#set(SDL2_INCLUDE_DIR "/home/kevin/CLionProjects/SDL/out/include/SDL")
+IF (WIN32)
+        MESSAGE(STATUS "Now is windows")
+        #set(CMAKE_CXX_FLAGS_RELEASE "-Od ${CMAKE_CXX_FLAGS}")
+        #STRING(REPLACE "-O2" "-Od" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+ELSEIF (APPLE)
+        MESSAGE(STATUS "Now is OSX systems.")
+        set(FFMPEG_HOME "/usr/local/Cellar/ffmpeg/4.4_2")
+        include_directories(${FFMPEG_HOME}/include)
+        link_directories(${FFMPEG_HOME}/lib)
+        find_package(SDL2 REQUIRED)
+        include_directories(${SDL2_INCLUDE_DIRS}/../)
+        set(CMAKE_PREFIX_PATH "/Users/kevinxie/Qt/6.1.1/clang_64/lib/cmake")
+ELSEIF (UNIX)
+        set(FFMPEG_HOME "/usr/local/ffmpeg")
+
+        #配置rpath
+        # make install时使用的rpath
+        set(CMAKE_INSTALL_RPATH "${FFMPEG_HOME}/lib")
+        # build时是否使用install_rpath
+        set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+
+        MESSAGE(STATUS "Now is UNIX-like OS's. Including Linux  and CygWin")
+        if (DEBUG_GLIBC)
+        #添加debug版glibc链接路径
+                set(GLIBC_LIB_DIR /home/kevin/glibc-2.31/out/lib)
+                link_directories("${GLIBC_LIB_DIR}")
+        endif ()
+
+        if (DEBUG_SDL)
+                set(SDL_INCLUDE_DIR /home/kevin/CLionProjects/SDL/out/include)
+                set(SDL_LIB_DIR /home/kevin/CLionProjects/SDL/out/lib)
+                include_directories("${SDL_INCLUDE_DIR}/SDL" "${SDL_INCLUDE_DIR}")
+                link_directories("${SDL_LIB_DIR}")
+                set(SDL2_LIBRARIES SDL2d)
+        else()
+                find_package(SDL2 REQUIRED)
+                include_directories(${SDL2_INCLUDE_DIRS})
+        endif ()
+
+        if (DEBUG_FFMPEG )
+                include_directories(${FFMPEG_HOME}/include)
+                link_directories(${FFMPEG_HOME}/lib)
+        else()
+        endif()
+
+        link_libraries(c)
+
+ENDIF ()
+
+MESSAGE(STATUS "SDL2_INCLUDE_DIRS = " ${SDL2_INCLUDE_DIRS})
+
+# QtCreator supports the following variables for Android, which are identical to qmake Android variables.
+# Check https://doc.qt.io/qt/deployment-android.html for more information.
+# They need to be set before the find_package( ...) calls below.
+
+#if(ANDROID)
+#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+#    if (ANDROID_ABI STREQUAL "armeabi-v7a")
+#        set(ANDROID_EXTRA_LIBS
+#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libcrypto.so
+#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libssl.so)
+#    endif()
+#endif()
+
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+
+set(PROJECT_SOURCES
+        main.cpp
+        mainwindow.cpp
+        mainwindow.h
+        audiothread.cpp
+        audiothread.h
+        ffmpegs.h
+        ffmpegs.cpp
+        mainwindow.ui
+)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(${PROJECT_TARGET_NAME}
+        ${PROJECT_SOURCES}
+    )
+else()
+    if(ANDROID)
+        add_library(${PROJECT_TARGET_NAME} SHARED
+            ${PROJECT_SOURCES}
+        )
+    else()
+        add_executable(${PROJECT_TARGET_NAME}
+            ${PROJECT_SOURCES}
+        )
+    endif()
+endif()
+
+target_link_libraries(${PROJECT_TARGET_NAME} PRIVATE
+    Qt${QT_VERSION_MAJOR}::Widgets
+    avcodec
+    avdevice
+    avfilter
+    avformat
+    avutil
+    swresample
+    swscale
+    )
