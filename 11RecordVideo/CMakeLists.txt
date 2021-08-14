@@ -47,7 +47,7 @@ ELSEIF (APPLE)
         find_package(SDL2 REQUIRED)
         include_directories(${SDL2_INCLUDE_DIRS}/../)
         set(QMAKE_INFO_PLIST "mac/Info.plist")
-#        set(CMAKE_PREFIX_PATH "/Users/kevinxie/Qt/6.1.1/clang_64/lib/cmake")
+        set(CMAKE_PREFIX_PATH "/Users/kevinxie/Qt/6.1.1/clang_64/lib/cmake")
 ELSEIF (UNIX)
         set(FFMPEG_HOME "/usr/local/ffmpeg")
 
