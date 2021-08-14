@@ -56,3 +56,4 @@ build*
 *.cache
 *.idea
 .clangd
+.DS_Store
