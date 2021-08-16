@@ -1,6 +1,7 @@
 #include "playthread.h"
 
 #include <QDebug>
+#include "SDL_render.h"
 
 #include <SDL2/SDL.h>
 extern "C" {
@@ -28,6 +29,15 @@ static SDL_Texture * createTexture(SDL_Renderer *renderer){
         return nullptr;
     }
 
+    //设置画笔颜色(黑色)
+    if (SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE)) {
+        return nullptr;
+    }
+
+    if(SDL_RenderClear(renderer)){
+        return nullptr;
+    }
+    
     //设置画笔颜色(黄色)
     if (SDL_SetRenderDrawColor(renderer, 255, 255, 0, SDL_ALPHA_OPAQUE)) {
         return nullptr;
